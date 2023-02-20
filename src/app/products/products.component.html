@@ -1,0 +1,60 @@
+<div class="container">
+  <nav class="p-2 m-2 border border-opacity-50" *ngIf="authService.hasRole('ADMIN')">
+    <button class="btn btn-outline-info" (click)="handelNewProduct()">new Product</button>
+  </nav>
+<!--  <div *ngIf="errorMessage" class="text-bg-danger">
+{{errorMessage}}
+  </div>-->
+<ng-template #errors>
+ <div class="text-danger">{{errorMessage}}</div>
+</ng-template>
+
+  <div class="card" *ngIf="products;else errors">
+    <div class="card-header">Product List</div>
+    <div class="card-body">
+      <form [formGroup]="searchFormGroup" (submit)="HandelSearchProducts()">
+        <div class="input-group">
+          <label class="input-group-text">Keyword :</label>
+          <input type="text" class="form-control" formControlName="keyword">
+          <button class="bnt bnt-info">
+           <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </form>
+      <table class="table">
+      <thead>
+      <tr>
+        <th>ID</th><th>NAME</th><th>PRICE</th><th>PROMO</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let p of products">
+        <td>{{p.id}}</td>
+        <td>{{p.name}}</td>
+        <td>{{p.price}}</td>
+        <td >
+         <i *ngIf="p.promotion==true" class="bi bi-check-square  text-warning m-3 "></i>
+        </td>
+        <td *ngIf="authService.hasRole('ADMIN')">
+          <button (click)="HandelSetPromotion(p)" [ngClass]="p.promotion==true?'btn-danger':'btn-primary'" class="btn ">
+          <span *ngIf="p.promotion==true">promo off</span>
+            <span *ngIf="p.promotion==false">promo on</span>
+          </button>
+        </td>
+        <td *ngIf="authService.hasRole('ADMIN')">
+          <button class="btn btn-danger " (click)="HandelDeleteProduct(p)">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+      </table>
+      <ul class="nav nav-pills">
+        <li *ngFor="let item of [].constructor(this.totalPages) ; let i =index">
+          <a (click)="gotoPage(i)" [ngClass]="i==currentPage?'btn-info':'btn-outline-info'" class="btn ms-1 mt-1">{{i}}</a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</div>

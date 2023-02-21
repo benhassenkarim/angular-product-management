@@ -6,6 +6,7 @@ import {LoginComponent} from "./login/login.component";
 import {AdminTemplateComponent} from "./admin-template/admin-template.component";
 import {AuthenticationGuard} from "./guards/authentication.guard";
 import {NewProductComponent} from "./new-product/new-product.component";
+import {EditProductComponent} from "./edit-product/edit-product.component";
 
 const routes: Routes = [
   {path : "login",component :LoginComponent},
@@ -13,7 +14,8 @@ const routes: Routes = [
   {path : "admin",component :AdminTemplateComponent,canActivate :[AuthenticationGuard],children:[
       {path : "products",component :ProductsComponent},
       {path :"costumers",component :CostumersComponent},
-      {path :"newproduct",component :NewProductComponent}
+      {path :"newproduct",component :NewProductComponent},
+      {path :"editproduct/:id",component :EditProductComponent}
     ]},
 
 ];

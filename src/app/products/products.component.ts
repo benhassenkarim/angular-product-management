@@ -102,4 +102,8 @@ else this.HandelSearchProducts();
   handelNewProduct() {
 this.router.navigateByUrl("admin/newproduct");
   }
+
+  HandelEditProduct(p: Product) {
+    this.router.navigateByUrl("admin/editproduct/"+p.id);
+  }
 }

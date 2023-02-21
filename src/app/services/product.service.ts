@@ -3,6 +3,7 @@ import {Observable, of} from 'rxjs';
 import {throwError} from "rxjs";
 import {PageProduct, Product} from "../model/product.model";
 import {UUID} from "angular2-uuid";
+import {ValidationErrors} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
@@ -59,4 +60,30 @@ private products! :Array<Product>;
       let pageProducts=results.slice(index,index+size);
       return of({page:page,size:size,totalPages:totalPages,products:pageProducts});
   }
-}}
+}
+public addNewProduct(product:Product):Observable<Product>{
+    product.id=UUID.UUID();
+    this.products.push(product);
+    return of(product);
+}
+public getProduct(id:string):Observable<Product>{
+    let product=this.products.find(p=>p.id==id);
+    if(product==undefined)return throwError(()=>new Error("product not found"));
+    return of(product);
+}
+  gerErrorMessage(fieldname: string, error: ValidationErrors) {
+
+    if(error['required']){
+      return fieldname+" is required !";
+    }else if (error['minlength']){
+      return  fieldname+"must have at least "+error['minlength']['requiredLength']+" characters ";
+    }else if (error['min']){
+      return fieldname +"must be supp then "+error['min']['min'];
+    }else return "";
+
+  }
+  public updateProduct(product:Product):Observable<Product>{
+    this.products=this.products.map(p=>(p.id==product.id)?product:p);
+    return of(product);
+  }
+}
